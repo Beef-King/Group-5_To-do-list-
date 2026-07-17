@@ -1,11 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Task</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasks</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='create_task.css') }}">
+<script src="{{ url_for('static', filename='create_task.js') }}" defer></script>
+
 </head>
 <body>
-    
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+
+<div class="navbar">
+  <button class="menu-btn" onclick="document.getElementById('navDropdown').classList.toggle('show')">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="dropdown" id="navDropdown">
+    <a href="index.html">Homepage</a>
+    <a href="tasks.html">View Tasks</a>
+    <a href="about.html">About</a>
+  </div>
+</div>
+
+
+<div class="card">
+  <h1>Tasks</h1>
+  <p class="subtitle">Stay on top of what matters</p>
+
+  <div class="input-row">
+      <input type="text" id="taskInput" placeholder="Add a new task..." />
+    </div>
+
+    <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Category</label>
+    <div class="input-row" style="margin-bottom:22px;">
+      <select id="categoryInput" style="flex:1;">
+        <option value="Work">Work</option>
+        <option value="School">School</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Health">Health</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Priority</label>
+    <div class="input-row" style="margin-bottom:22px;">
+      <select id="priorityInput" style="flex:1;">
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+
+    <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Due Date</label>
+    <div class="input-row" style="margin-bottom:22px;">
+      <input type="datetime-local" id="dateTimeInput2" style="flex:1; padding:13px 16px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onchange="console.log('Selected: ' + this.value);" />
+    </div>
+
+    <div class="input-row" style="margin-bottom:22px;">
+      <button onclick="addTask()" style="flex:1; padding:13px 16px; background:linear-gradient(135deg, var(--accent1), var(--accent2)); border:none; border-radius:12px; color:#0d1117; font-weight:700; cursor:pointer;">Add</button>
+    </div>
+
+    <div class="filters">
+      <button class="active" data-filter="all" onclick="setFilter('all')">All</button>
+      <button data-filter="pending" onclick="setFilter('pending')">Pending</button>
+      <button data-filter="done" onclick="setFilter('done')">Done</button>
+    </div>
+
+
+
+
+</body>
+</html>
+<body>
+
 </body>
 </html>

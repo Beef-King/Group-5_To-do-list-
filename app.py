@@ -12,7 +12,7 @@ def create_task():
 
 @app.route("/tasks")
 def view_tasks():
-    return render_template("view_tasks.html")
+    return render_template("view_task.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

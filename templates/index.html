@@ -1,18 +1,63 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-
-    <h1>My To-Do List</h1>
-    <p>Welcome to Group 5's project.</p>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-</body>
+    <head>
+        <title>TO DO LIST</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    </head>
+    <body>
+      <!--left side -->
+      <selection class="hero-text">
+        <!--left side -->
+        <div class="hero-text">
+         <h1>
+            Organise<br>Seamlessly.<br> Achieve <br>More.
+         </h1>
+         <h2>
+            A simple and powerful<br>task manager that helps<br>you stay focused,
+            meet<br>deadlines,and <br>accomplish <br> your goals.
+         </h2>
+         <a href="/create">
+            <button class="btn">
+                Get Started >
+            </button>
+         </a>
+        </div>
+         <!--Right side -->
+        <div class="hero-image">
+             <img src="phone.png" alt="To do app">
+        </div>
+     </selection>
+         <!--Features Section -->
+         <section class="features">
+         <div class="feature-card">
+            <img src="task.png" alt="easy tasks">
+         <h3>Easy task</h3>
+         <p>
+            create,<br>edit and<br>organise<br>task in<br>seconds
+         </p>
+        </div>
+        <div class="feature-card">
+            <img src="calender.png" alt="due dates">
+          <h3>Due<br>Dates</h3>
+          <p>
+            Set due<br>dates<br>and<br>never<br>miss deadlines
+          </p>
+        </div>
+        <div class="feature-card">
+            <img src="tag.png" alt="Categories">
+         <h3>Categories</h3>
+         <p>
+            Organise<br>your task<br>by School,<br>Work,and<br>more.
+         </p>
+        </div>
+        <div class="feature-card">
+            <img src="flag.png" alt="Priority">
+         <h3>Priority</h3>
+         <p>
+            Set<br>priorities<br>on what<br>matters<br>most.
+         </p>
+        </div>
+         </section>
+    </body>
 </html>

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     description TEXT,
     category TEXT,
     priority TEXT,
-    status TEXT
+    status TEXT DEFAULT 'Pending'
 )
 """)
 

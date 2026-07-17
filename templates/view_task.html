@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tasks</title>
+    <title>COS Group 5 project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_task.css') }}">
+    <script src="{{ url_for('static', filename='view_task.js') }}" defer></script>
 </head>
 <body>
+  <div class="container2">
+    <div class="view-task">
+    <h1>View Tasks</h1>
+
+    <div class="actions">
+        <button class="select-btn">
+            Select ▼
+        </button>
+
+        <button class="delete-btn">
+            🗑 Delete
+        </button>
+    </div>
+</div>
     
+  </div>
+     
 </body>
 </html>
