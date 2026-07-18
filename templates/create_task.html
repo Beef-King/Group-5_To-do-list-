@@ -23,9 +23,9 @@
   </button>
 
   <div class="dropdown" id="navDropdown">
-    <a href="index.html">Homepage</a>
-    <a href="/tasks">View Tasks</a>
-    <a href="about.html">About</a>
+    <a href="{{ url_for('home') }}">Homepage</a>
+    <a href="{{ url_for('view_tasks') }}">View Tasks</a>
+    <a href="{{ url_for('home') }}">About</a>
   </div>
 </div>
 
@@ -34,13 +34,18 @@
   <h1>Tasks</h1>
   <p class="subtitle">Stay on top of what matters</p>
 
+  <form action="/create" method="POST">
   <div class="input-row">
-      <input type="text" id="taskInput" placeholder="Add a new task..." />
+      <input name="title" type="text" id="taskInput" placeholder="Title" />
+    </div>
+
+    <div class="input-row">
+      <input name="description" type="text" id="taskInput" placeholder="Task Description" />
     </div>
 
     <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Category</label>
     <div class="input-row" style="margin-bottom:22px;">
-      <select id="categoryInput" style="flex:1;">
+      <select name="category" id="categoryInput" style="flex:1;">
         <option value="Work">Work</option>
         <option value="School">School</option>
         <option value="Shopping">Shopping</option>
@@ -52,7 +57,7 @@
 
     <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Priority</label>
     <div class="input-row" style="margin-bottom:22px;">
-      <select id="priorityInput" style="flex:1;">
+      <select name="priority" id="priorityInput" style="flex:1;">
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
@@ -61,18 +66,20 @@
 
     <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Due Date</label>
     <div class="input-row" style="margin-bottom:22px;">
-      <input type="datetime-local" id="dateTimeInput2" style="flex:1; padding:13px 16px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onchange="console.log('Selected: ' + this.value);" />
+      <input name="due_date" type="datetime-local" id="dateTimeInput2" style="flex:1; padding:13px 16px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onchange="console.log('Selected: ' + this.value);" />
     </div>
 
     <div class="input-row" style="margin-bottom:22px;">
-      <button onclick="addTask()" style="flex:1; padding:13px 16px; background:linear-gradient(135deg, var(--accent1), var(--accent2)); border:none; border-radius:12px; color:#0d1117; font-weight:700; cursor:pointer;">Add</button>
+      <button type="submit" style="flex:1; padding:13px 16px; background:linear-gradient(135deg, var(--accent1), var(--accent2)); border:none; border-radius:12px; color:#0d1117; font-weight:700; cursor:pointer;">Add</button>
     </div>
+    </form>
 
     <div class="filters">
       <button class="active" data-filter="all" onclick="setFilter('all')">All</button>
       <button data-filter="pending" onclick="setFilter('pending')">Pending</button>
       <button data-filter="done" onclick="setFilter('done')">Done</button>
     </div>
+    
 
 
 
