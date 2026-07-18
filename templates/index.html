@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>TO DO LIST</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+              <title>TO DO LIST</title>
     </head>
     <body>
       <!--left side -->
-      <selection class="hero-text">
+      <section class="hero-text">
         <!--left side -->
         <div class="hero-text">
          <h1>
@@ -17,17 +17,21 @@
             A simple and powerful<br>task manager that helps<br>you stay focused,
             meet<br>deadlines,and <br>accomplish <br> your goals.
          </h2>
+
          <a href="/create">
-            <button class="btn">
-                Get Started 
-            </button>
+         <div class="btn-wrapper">
+         <button class="btn">      
+            Get Started 
+            <span>➤</span>
+         </button>
+         </div>
          </a>
         </div>
          <!--Right side -->
         <div class="hero-image">
              <img src="phone.png" alt="To do app">
         </div>
-     </selection>
+     </section>
          <!--Features Section -->
          <section class="features">
          <div class="feature-card">

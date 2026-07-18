@@ -36,7 +36,7 @@
 
   <form action="/create" method="POST">
   <div class="input-row">
-      <input name="title" type="text" id="taskInput" placeholder="Title" />
+      <input name="title" type="text" id="taskInput" placeholder="Title" required />
     </div>
 
     <div class="input-row">
@@ -66,7 +66,7 @@
 
     <label style="display:block; margin-bottom:10px; color:var(--muted); font-size:12px; letter-spacing:0.3px;">Due Date</label>
     <div class="input-row" style="margin-bottom:22px;">
-      <input name="due_date" type="datetime-local" id="dateTimeInput2" style="flex:1; padding:13px 16px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onchange="console.log('Selected: ' + this.value);" />
+      <input name="due_date" type="datetime-local" id="dateTimeInput2" required style="flex:1; padding:13px 16px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onchange="console.log('Selected: ' + this.value);" />
     </div>
 
     <div class="input-row" style="margin-bottom:22px;">
