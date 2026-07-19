@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <link rel="stylesheet" href="../static/style.css">  
+        
               <title>TO DO LIST</title>
     </head>
     <body>
@@ -17,6 +17,10 @@
             A simple and powerful<br>task manager that helps<br>you stay focused,
             meet<br>deadlines,and <br>accomplish <br> your goals.
          </h2>
+          <!--Right side -->
+        <div class="hero-image">
+             <img src="../images/phone.jpeg" alt="To do app">
+        </div>
 
          <a href="/create">
          <div class="btn-wrapper">
@@ -27,36 +31,33 @@
          </div>
          </a>
         </div>
-         <!--Right side -->
-        <div class="hero-image">
-             <img src="phone.png" alt="To do app">
-        </div>
+        
      </section>
          <!--Features Section -->
          <section class="features">
          <div class="feature-card">
-            <img src="task.png" alt="easy tasks">
+            <img src="../images/task.png" alt="easy tasks">
          <h3>Easy task</h3>
          <p>
             create,<br>edit and<br>organise<br>task in<br>seconds
          </p>
         </div>
         <div class="feature-card">
-            <img src="calender.png" alt="due dates">
+            <img src="../images/calendar.png" alt="due dates">
           <h3>Due<br>Dates</h3>
           <p>
             Set due<br>dates<br>and<br>never<br>miss deadlines
           </p>
         </div>
         <div class="feature-card">
-            <img src="tag.png" alt="Categories">
+            <img src="../images/tag.png" alt="Categories">
          <h3>Categories</h3>
          <p>
             Organise<br>your task<br>by School,<br>Work,and<br>more.
          </p>
         </div>
         <div class="feature-card">
-            <img src="flag.png" alt="Priority">
+            <img src="../images/flag.png" alt="Priority">
          <h3>Priority</h3>
          <p>
             Set<br>priorities<br>on what<br>matters<br>most.

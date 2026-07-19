@@ -40,10 +40,11 @@ body{
     display: flex; 
     justify-content: center; 
     align-items: center;
+    
 
 }
 .btn{
-    background: #0b2c6f;
+    background: #FF6F61;
     color: white;
     padding: 15px 35px;
     border: none;
@@ -56,9 +57,9 @@ body{
     background: #1d4ed8;
 }
 .hero-image{
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 .hero-image img{
     width: 350px;
