@@ -7,23 +7,61 @@
     <link rel="stylesheet" href="../static/view_task.css">
     <script src="..static\view_task.js"></script>
 </head>
-<body>
+<body class="gallery2">
   <div class="container2">
-    <div class="view-task">
-    <h1>View Tasks</h1>
-
-    <div class="actions">
-        <button class="select-btn">
-            Select ▼
-        </button>
-
-        <button class="delete-btn">
-            🗑 Delete
-        </button>
+    <a href="/create" class="new">
+    <div class="new-task">
+       + Add new task
     </div>
-</div>
+    </a>
+    <div class="view-task">
+        <h1>View Tasks</h1>
+        <div class="actions">
+            <button class="select-btn">
+                Select  All ▼
+            </button>
+            <button class="delete-btn">
+                🗑 Delete
+            </button>
+        </div>
+    </div>
+    <div class="search-container">
+       <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search tasks...">
+    </div>
+    <div class="status-tabs">
+       <button id="allBtn" class="status-tab active">All</button>
+       <button id="pendingBtn" class="status-tab">Pending</button>
+       <button id="completedBtn" class="status-tab">Completed</button>
+    </div>
+    <div class="filter-tabs">
+          <span>Filter by :</span>
+          <select>
+             <option value ="" selected disabled>Status</option>
+             <option>Pending</option>
+             <option>Completed</option>
+          </select>
+          
+          <select>
+             <option value ="" selected disabled>All Categories</option>
+             <option>School</option>
+             <option>Work</option>
+             <option>Shopping</option>
+             <option>Health</option>
+             <option>Birthday</option>
+             <option>Others</option>
+          </select>
+
+          <select>
+             <option value ="" selected disabled>All Priorities</option>
+             <option>High</option>
+             <option>Medium</option>
+             <option>Low</option>
+          </select>
+        </div>
     
-  </div>
+
+
+</div>
      
 </body>
 </html>
