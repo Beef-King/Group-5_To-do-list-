@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tasks</title>
-<link rel="stylesheet" href="../static/create_task.css">
-
+<link rel="stylesheet" href="{{url_for('static', filename='create_task.css')}}">
+<script src="{{url_for('static', filename='create_task.js')}}" defer></script>
 </head>
 <body>
 
@@ -24,7 +24,7 @@
   <div class="dropdown" id="navDropdown">
     <a href="{{ url_for('home') }}">Homepage</a>
     <a href="{{ url_for('view_tasks') }}">View Tasks</a>
-    <a href="{{ url_for('home') }}">About</a>
+    <a href="{{ url_for('about') }}">About</a>
   </div>
 </div>
 

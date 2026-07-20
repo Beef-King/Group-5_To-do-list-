@@ -36,5 +36,9 @@ def create_task():
 def view_tasks():
     return render_template("view_task.html")
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
