@@ -26,7 +26,36 @@
     position:relative;
     overflow-x:hidden;
   }
+  .header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:#5c2cff;
+    color:white;
+}
 
+.logo{
+    margin:0;
+    font-size:26px;
+    font-weight:bold;
+}
+
+.navbar{
+    display:flex;
+    gap:25px;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.navbar a:hover{
+    color:#d9d9d9;
+}
   /* animated glow orbs */
   .orb{
     position:fixed;

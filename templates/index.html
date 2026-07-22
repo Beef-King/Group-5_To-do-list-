@@ -3,9 +3,22 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  
         
-              <title>TO DO LIST</title>
+              <title>Task Manager</title>
     </head>
     <body>
+
+      <header class="header">
+
+    <h2 class="logo">Task Manager</h2>
+
+    <nav class="navbar">
+        <a href="/create">Create Task</a>
+        <a href="/tasks">View Tasks</a>
+        <a href="/about">About</a>
+    </nav>
+
+</header>
+
       <!--left side -->
       <section class="hero-text">
         <!--left side -->
@@ -25,7 +38,7 @@
          <a href="/create">
          <div class="btn-wrapper">
          <button class="btn">      
-            Get Started  ➤
+            Get Started   ➤
          </button>
          </div>
          </a>
