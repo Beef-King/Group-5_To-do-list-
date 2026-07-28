@@ -1,9 +1,9 @@
 /* Reset */
 *{
-    margin-left: 30px;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
-     font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 body{
    
@@ -18,11 +18,23 @@ body{
     background:#5c2cff;
     color:white;
 }
-
 .logo{
-    margin:0;
-    font-size:26px;
-    font-weight:bold;
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: white;
+}
+
+.logo span{
+    color: #B8E1FF;
+}
+.logo {
+    transition: transform .2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
 }
 
 .navbar{
@@ -41,16 +53,9 @@ body{
     color:#d9d9d9;
 }
 /* Hero Section */
-.hero{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 70px 10%;
-    min-height: 100vh;
-}
+
 .hero-text{
-    flex: 1;
-    
+    padding:20px;
 }
 .hero-text h1{
     font-size: 60px;
@@ -66,12 +71,7 @@ body{
     margin-bottom: 30px;
 }
 .btn-wrapper{
-    height: 30vh;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    
-
+    margin-top:30px;
 }
 .btn{
     background: #111fb0;
@@ -87,13 +87,12 @@ body{
     background: #1d4ed8;
 }
 .hero-image{
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    text-align: center;
 }
 .hero-image img{
-    width: 350px;
     max-width: 100%;
+    width: 350px;
+    height: auto;
 }
 /*Features*/
 .features{
@@ -128,33 +127,30 @@ body{
     line-height:1.8;
     font-size:16px;
 }
+@media (max-width: 991px){
 
-/* Responsive */
-@media(max-width:768px){
+    .hero-text{
+        text-align:center;
+    }
 
-.hero{
-    flex-direction:column;
-    text-align:center;
-    padding:50px 8%;
-}
+    .hero-text h1{
+        font-size:42px;
+    }
 
-.hero-text h1{
-    font-size:42px;
-}
+    .hero-text h2{
+        font-size:18px;
+    }
 
-.hero-text h2{
-    font-size:18px;
-}
+    .hero-image{
+        margin-top:40px;
+    }
 
-.hero-image{
-    margin-top:40px;
-}
+    .feature-card{
+        margin-bottom:20px;
+    }
 
-.hero-image img{
-    width:260px;
-}
+    .navbar-nav{
+        text-align:center;
+    }
 
-.features{
-    grid-template-columns:1fr;
-}
 }

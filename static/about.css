@@ -1,30 +1,19 @@
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 30px;
-    background:#5c2cff;
-    color:white;
+.logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: white;
+    text-decoration: none;
 }
 
-.logo{
-    margin:0;
-    font-size:26px;
-    font-weight:bold;
+.logo span {
+    color: #B8E1FF;
+}
+.logo {
+    transition: transform .2s ease;
 }
 
-.navbar{
-    display:flex;
-    gap:25px;
-}
-
-.navbar a{
-    color:white;
-    text-decoration:none;
-    font-weight:600;
-    transition:.3s;
-}
-
-.navbar a:hover{
-    color:#d9d9d9;
+.logo:hover {
+    transform: scale(1.03);
 }

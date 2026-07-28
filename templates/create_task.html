@@ -4,32 +4,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tasks</title>
+<title>TaskHub</title>
 <link rel="stylesheet" href="{{url_for('static', filename='create_task.css')}}">
 <script src="{{url_for('static', filename='create_task.js')}}" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <header class="header">
 
-    <h2 class="logo">Task Manager</h2>
+    <h2 class="logo">
+      <span>Task</span>Hub
+    </h2>
 
     <nav class="navbar">
-        <a href="/">Home</a>
+        
         <a href="/tasks">View Tasks</a>
         <a href="/about">About</a>
+        
     </nav>
 
 </header>
 
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
-
-
-
-
-
-
 
 <div class="card">
   <h1>Tasks</h1>
@@ -74,12 +72,6 @@
       <button type="submit" style="flex:1; padding:13px 16px; background:linear-gradient(135deg, var(--accent1), var(--accent2)); border:none; border-radius:12px; color:#0d1117; font-weight:700; cursor:pointer;">Add</button>
     </div>
     </form>
-
-    
-    
-
-
-
 
 </body>
 </html>

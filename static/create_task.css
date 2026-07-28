@@ -16,7 +16,7 @@
   body{
     min-height:100vh;
     background:
-      radial-gradient(circle at 15% 20%, #1e2a4a 0%, transparent 40%),
+      radial-gradient(circle at 15% 20%, #301e4a 0%, transparent 40%),
       radial-gradient(circle at 85% 75%, #2a1a4a 0%, transparent 45%),
       linear-gradient(160deg, var(--bg1), var(--bg2));
     background-attachment:fixed;
@@ -31,14 +31,26 @@
     justify-content:space-between;
     align-items:center;
     padding:15px 30px;
-    background:#5c2cff;
+    background:#7148f8;
     color:white;
 }
-
 .logo{
-    margin:0;
-    font-size:26px;
-    font-weight:bold;
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: white;
+}
+
+.logo span{
+    color: #B8E1FF;
+}
+.logo {
+    transition: transform .2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
 }
 
 .navbar{
@@ -84,6 +96,7 @@
     max-width:90%;
     width:100%;
     margin:0 auto;
+    margin-top: 40px;
     position:relative;
     z-index:1;
   }

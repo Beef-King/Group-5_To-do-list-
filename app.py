@@ -1,15 +1,104 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
-import os
 
 app = Flask(__name__)
 
+app.secret_key = "group5_secret_key"
+
 @app.route("/")
 def home():
+    if "user_id" in session:
+        return redirect(url_for("view_tasks"))
     return render_template("index.html")
+
+@app.route("/signup", methods=["POST"])
+def signup():
+
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    email = request.form["email"]
+    password = request.form["password"]
+    confirm_password = request.form["confirm_password"]
+
+    if password != confirm_password:
+        flash("Passwords do not match.", "error")
+        return redirect(url_for("login"))
+
+    connection = sqlite3.connect("database.db")
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+
+    # Check if email already exists
+    cursor.execute("SELECT * FROM users WHERE email=?", (email,))
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        connection.close()
+        flash("Email already exists", "error")
+        return redirect(url_for("login"))
+
+    hashed_password = generate_password_hash(password)
+
+    cursor.execute("""
+        INSERT INTO users(first_name, last_name, email, password)
+        VALUES (?, ?, ?, ?)
+    """, (first_name, last_name, email, hashed_password))
+
+    connection.commit()
+    connection.close()
+
+    flash("Account created successfully! Please sign in.", "success")
+    return redirect(url_for("login"))
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if "user_id" in session:
+        return redirect(url_for("view_tasks"))
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        connection = sqlite3.connect("database.db")
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE email=?",
+            (email,)
+        )
+
+        user = cursor.fetchone()
+        connection.close()
+
+        if user and check_password_hash(user["password"], password):
+            session["user_id"] = user["id"]
+            session["first_name"] = user["first_name"]
+            flash(f"Welcome back, {user['first_name']}!", "success")
+            return redirect(url_for("view_tasks"))
+
+        flash("Invalid email or password", "error")
+        return redirect(url_for("login"))
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
 
 @app.route("/create", methods=["GET", "POST"])
 def create_task():
+
+    if "user_id" not in session:
+            return redirect(url_for("login"))
+
+    user_id = session["user_id"]
+
     if request.method == "POST":
         print("Form data received:", request.form)  # Debugging line
         
@@ -22,8 +111,8 @@ def create_task():
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
         cursor.execute(
-            "INSERT INTO tasks (title, description, category, priority, due_date) VALUES (?, ?, ?, ?, ?)",
-            (title, description, category, priority, due_date)
+            "INSERT INTO tasks (title, description, category, priority, due_date, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+            (title, description, category, priority, due_date, user_id)
         )
         connection.commit()
         connection.close()
@@ -40,28 +129,35 @@ def about():
 
 @app.route("/tasks")
 def view_tasks():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
     connection = sqlite3.connect("database.db")
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM tasks")
+    cursor.execute(
+    "SELECT * FROM tasks WHERE user_id=?",
+    (session["user_id"],)
+)
     tasks = cursor.fetchall()
 
     connection.close()
 
-    print("Tasks retrieved:", tasks)  # Debugging line
-
     return render_template("view_task.html", tasks=tasks)
-
 
 @app.route("/api/tasks", methods=["GET"])
 def api_get_tasks():
+
+    if "user_id" not in session:
+        return jsonify({"message": "Unauthorized"}), 401
 
     connection = sqlite3.connect("database.db")
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM tasks")
+    cursor.execute("SELECT * FROM tasks WHERE user_id=?", (session["user_id"],))
     tasks = [dict(task) for task in cursor.fetchall()]
 
     connection.close()
@@ -69,12 +165,13 @@ def api_get_tasks():
 
 @app.route("/api/tasks/<int:id>", methods=["GET"])
 def api_get_task(id):
-
+    if "user_id" not in session:
+        return jsonify({"message": "Unauthorized"}), 401
     connection = sqlite3.connect("database.db")
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM tasks WHERE id=?", (id,))
+    cursor.execute("SELECT * FROM tasks WHERE id=? AND user_id=?", (id, session["user_id"]))
     task = cursor.fetchone()
 
     connection.close()
@@ -97,15 +194,16 @@ def api_create_task():
 
     cursor.execute("""
         INSERT INTO tasks
-        (title, description, category, priority, due_date, status)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (title, description, category, priority, due_date, status, user_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         data["title"],
         data["description"],
         data["category"],
         data["priority"],
         data["due_date"],
-        "Pending"
+        "Pending",
+        session["user_id"]
     ))
 
     connection.commit()
@@ -122,28 +220,32 @@ def api_create_task():
 @app.route("/api/tasks/<int:id>", methods=["PUT"])
 def api_update_task(id):
 
+    if "user_id" not in session:
+        return jsonify({"message": "Unauthorized"}), 401
+
     data = request.get_json()
 
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
 
     cursor.execute("""
-        UPDATE tasks
-        SET
-            title=?,
-            description=?,
-            category=?,
-            priority=?,
-            due_date=?
-        WHERE id=?
-    """, (
-        data["title"],
-        data["description"],
-        data["category"],
-        data["priority"],
-        data["due_date"],
-        id
-    ))
+    UPDATE tasks
+    SET
+        title=?,
+        description=?,
+        category=?,
+        priority=?,
+        due_date=?
+    WHERE id=? AND user_id=?
+""", (
+    data["title"],
+    data["description"],
+    data["category"],
+    data["priority"],
+    data["due_date"],
+    id,
+    session["user_id"]
+))
 
     connection.commit()
     connection.close()
@@ -159,8 +261,8 @@ def api_delete_task(id):
     cursor = connection.cursor()
 
     cursor.execute(
-        "DELETE FROM tasks WHERE id=?",
-        (id,)
+        "DELETE FROM tasks WHERE id=? AND user_id=?",
+        (id, session["user_id"])
     )
 
     connection.commit()
@@ -182,11 +284,11 @@ def api_search_tasks():
     cursor.execute("""
         SELECT *
         FROM tasks
-        WHERE title LIKE ?
-        OR description LIKE ?
+        WHERE (title LIKE ? OR description LIKE ?) AND user_id=?
     """, (
         f"%{query}%",
-        f"%{query}%"
+        f"%{query}%",
+        session["user_id"]
     ))
 
     tasks = [dict(task) for task in cursor.fetchall()]
@@ -202,8 +304,8 @@ def api_filter_tasks():
     priority = request.args.get("priority")
     status = request.args.get("status")
 
-    sql = "SELECT * FROM tasks WHERE 1=1"
-    values = []
+    sql = "SELECT * FROM tasks WHERE user_id=?"
+    values = [session["user_id"]]
 
     if category:
         sql += " AND category=?"
@@ -236,8 +338,8 @@ def complete_task(id):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT status FROM tasks WHERE id=?",
-        (id,)
+        "SELECT status FROM tasks WHERE id=? AND user_id=?",
+        (id, session["user_id"])
     )
 
     task = cursor.fetchone()
@@ -251,8 +353,8 @@ def complete_task(id):
             new_status = "Pending"
 
         cursor.execute(
-            "UPDATE tasks SET status=? WHERE id=?",
-            (new_status, id)
+            "UPDATE tasks SET status=? WHERE id=? AND user_id=?",
+            (new_status, id, session["user_id"])
         )
 
         connection.commit()

@@ -90,11 +90,7 @@ body.gallery2{
     letter-spacing:.5px;
 }
 
-.actions{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+
 
 .select-btn{
     padding:5px;

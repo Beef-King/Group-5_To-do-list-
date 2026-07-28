@@ -15,6 +15,21 @@ CREATE TABLE IF NOT EXISTS tasks (
     status TEXT DEFAULT 'Pending'
 )
 """)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL
+)
+""")
+#cursor.execute("""
+#ALTER TABLE tasks
+#ADD COLUMN user_id INTEGER
+#""")
+
+#cursor.execute("DROP TABLE IF EXISTS users")
 
 connection.commit()
 connection.close()
