@@ -1,0 +1,18 @@
+name: Daily Task Reminder
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  reminder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger reminder endpoint
+        run: |
+          curl -X GET \
+          -H "X-SECRET-TOKEN: ${{ secrets.REMINDER_SECRET }}" \
+          https://YOUR-PYTHONANYWHERE-URL/api/reminders
