@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 from email_service import send_email
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -368,6 +369,13 @@ def complete_task(id):
 
 @app.route("/api/reminders")
 def api_reminders():
+
+    secret = request.headers.get("X-SECRET-TOKEN")
+
+    if secret != os.environ.get("REMINDER_SECRET"):
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # your reminder code...
 
     connection = sqlite3.connect("database.db")
     connection.row_factory = sqlite3.Row
