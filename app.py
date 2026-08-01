@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from email_service import send_email
 import sqlite3
 import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "database.db")
 
 app = Flask(__name__)
 
@@ -29,7 +31,7 @@ def signup():
         flash("Passwords do not match.", "error")
         return redirect(url_for("login"))
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -66,7 +68,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        connection = sqlite3.connect("database.db")
+        connection = sqlite3.connect(DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -111,7 +113,7 @@ def create_task():
         priority = request.form["priority"]
         due_date = request.form.get("due_date")
  
-        connection = sqlite3.connect("database.db")
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         cursor.execute(
             "INSERT INTO tasks (title, description, category, priority, due_date, user_id) VALUES (?, ?, ?, ?, ?, ?)",
@@ -136,7 +138,7 @@ def view_tasks():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -157,7 +159,7 @@ def api_get_tasks():
     if "user_id" not in session:
         return jsonify({"message": "Unauthorized"}), 401
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -171,7 +173,7 @@ def api_get_tasks():
 def api_get_task(id):
     if "user_id" not in session:
         return jsonify({"message": "Unauthorized"}), 401
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -193,7 +195,7 @@ def api_create_task():
 
     data = request.get_json()
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -229,7 +231,7 @@ def api_update_task(id):
 
     data = request.get_json()
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -261,7 +263,7 @@ def api_update_task(id):
 @app.route("/api/tasks/<int:id>", methods=["DELETE"])
 def api_delete_task(id):
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -281,7 +283,7 @@ def api_search_tasks():
 
     query = request.args.get("q", "")
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -338,7 +340,7 @@ def api_filter_tasks():
 @app.route("/complete/<int:id>", methods=["POST"])
 def complete_task(id):
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
