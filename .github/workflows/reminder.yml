@@ -15,4 +15,4 @@ jobs:
         run: |
           curl -X GET \
           -H "X-SECRET-TOKEN: ${{ secrets.REMINDER_SECRET }}" \
-          https://YOUR-PYTHONANYWHERE-URL/api/reminders
+          https://beefking7.pythonanywhere.com/api/reminders
