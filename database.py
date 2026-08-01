@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS users(
     password TEXT NOT NULL
 )
 """)
+cursor.execute("""
+ALTER TABLE tasks
+ADD COLUMN reminder_sent INTEGER DEFAULT 0
+""")
 #cursor.execute("""
 #ALTER TABLE tasks
 #ADD COLUMN user_id INTEGER
