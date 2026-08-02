@@ -13,6 +13,6 @@ jobs:
     steps:
       - name: Trigger reminder endpoint
         run: |
-          curl -X GET \
+          curl -X POST \
           -H "X-SECRET-TOKEN: ${{ secrets.REMINDER_SECRET }}" \
           https://beefking7.pythonanywhere.com/api/reminders
