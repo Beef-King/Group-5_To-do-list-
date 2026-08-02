@@ -369,7 +369,7 @@ def complete_task(id):
 
     return redirect(url_for("view_tasks"))
 
-@app.route("/api/reminders")
+@app.route("/api/reminders" , methods=["POST"])
 def api_reminders():
 
     secret = request.headers.get("X-SECRET-TOKEN")
