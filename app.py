@@ -325,7 +325,7 @@ def api_filter_tasks():
         sql += " AND status=?"
         values.append(status)
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -379,7 +379,7 @@ def api_reminders():
 
     # your reminder code...
 
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
