@@ -109,6 +109,7 @@ body{
     text-align: center;
     transition: 0.3s;
     box-shadow: 0 4px 10px rgba(0, 0,0, 0);
+    height: 100%;
 }
 .feature-card:hover{
     transform: translateY(-8px);

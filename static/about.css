@@ -1,3 +1,6 @@
+body.bg-light{
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 .logo {
     font-family: 'Sora', sans-serif;
     font-size: 2rem;

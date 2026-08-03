@@ -11,6 +11,9 @@ from authlib.integrations.flask_client import OAuth
 
 load_dotenv()
 
+print("SECRET_KEY =", os.getenv("SECRET_KEY"))
+print("CLIENT_ID =", os.getenv("GOOGLE_CLIENT_ID"))
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "database.db")
 

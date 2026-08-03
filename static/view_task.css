@@ -1,6 +1,11 @@
 body.gallery2{
-  background: linear-gradient(to right, #B19CD9, #3B3C91);
-    color: #222;
+  min-height: 100vh;
+  background:
+  radial-gradient(circle at 15% 20%,#1e2a4a 0%, transparent 40%),
+  radial-gradient(circle at 85% 75%,#2a1a4a 0%, transparent 45%),
+  linear-gradient(160deg,#0d1117,#1a1030);
+  color:#fff;
+  background-attachment: fixed;
 }
 
 .header{
@@ -35,13 +40,15 @@ body.gallery2{
 }
 
 .container2{
-  background: linear-gradient(to left,  #7a8fab , #5b3f8c);
-  border: 2px solid #EFE4FF;
-  box-shadow: 0 10px 30px rgba(75, 0, 130, 0.12);
+  background: rgba(255, 255, 255, .06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   width:94%;
-  min-height:100vh; 
   margin:auto;
-  border-radius:8px;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius:20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
   overflow:visible;
 }
 
@@ -127,19 +134,22 @@ body.gallery2{
 }
 
 .search-input{
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     width: 100%;
     padding: 10px;
-    border: 2px solid #E5E7EB;
     border-radius: 12px;
     font-size: 15px;
     outline: none;
     transition: all 0.3s ease;
-    background: #fff;
+    color: #fff;
 }
 
 .search-input:focus{
     border-color: #8B5CF6;
-    box-shadow: 0 0 10px rgba(139,92,246,.25);
+    box-shadow: 0 0 12px rgba(139,92,246,.3);
 }
 
 .status-tabs{
@@ -192,12 +202,12 @@ body.gallery2{
     }
     
     .filter-tabs select{
-        padding:10px;
+        padding:5px;
         font-size: 15px;
         font-weight: 600;
         border:1px solid #ccc;
         border-radius:8px;
-        background:#fff;
+        background:#e5e7eb;
     }
 
     
@@ -367,16 +377,20 @@ body.gallery2{
     justify-content:flex-end;
     gap:10px;
 }
-
 .task-card{
-    background:#fff;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border:1px solid rgba(255,255,255,0.12);
     border-radius:16px;
     padding:24px;
-    box-shadow:0 10px 25px rgba(0,0,0,.12);
-    border:1px solid #eee;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
 
     transition: transform .3s ease, box-shadow .3s ease;
 }
+
 
 .task-card:hover{
     transform:translateY(-5px);
@@ -385,12 +399,13 @@ body.gallery2{
 
 .task-card h3{
     margin-bottom: 15px;
-    color:#5c2cff;
+    color:#ffffff;
     font-size: 22px;
 }
 
 .task-card p{
     margin:8px 0;
+    color: #d6d6e7;
 }
 
 .task-details{
@@ -404,7 +419,8 @@ body.gallery2{
     justify-content:space-between;
     align-items:center;
     padding:6px 0;
-    border-bottom:1px solid #eee;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    color:#eaeaf5;
 }
 
 .detail-row:last-child{

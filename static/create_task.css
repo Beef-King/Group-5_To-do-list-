@@ -22,7 +22,6 @@
     background-attachment:fixed;
     font-family:'Segoe UI', system-ui, sans-serif;
     color:var(--text);
-    padding:60px 20px;
     position:relative;
     overflow-x:hidden;
   }
@@ -96,7 +95,7 @@
     max-width:90%;
     width:100%;
     margin:0 auto;
-    margin-top: 40px;
+    margin-top: 20px;
     position:relative;
     z-index:1;
   }
