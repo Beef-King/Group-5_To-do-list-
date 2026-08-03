@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+import random
 from datetime import datetime, timedelta
 from email_service import send_email
 import sqlite3
@@ -19,6 +20,7 @@ def home():
     return render_template("index.html")
 
 @app.route("/signup", methods=["POST"])
+
 def signup():
 
     first_name = request.form["first_name"]
@@ -91,6 +93,148 @@ def login():
 
     return render_template("login.html")
 
+@app.route("/forgot_password", methods=["POST"])
+def forgot_password():
+
+    email = request.form["email"]
+
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        (email,)
+    )
+
+    user = cursor.fetchone()
+
+    if not user:
+        connection.close()
+        flash("No account found with that email.", "error")
+        return redirect(url_for("login"))
+
+    otp = str(random.randint(100000, 999999))
+
+    expiry = (
+        datetime.now() + timedelta(minutes=10)
+    ).strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor.execute("""
+        UPDATE users
+        SET otp_code=?, otp_expiry=?
+        WHERE email=?
+    """, (
+        otp,
+        expiry,
+        email
+    ))
+
+    connection.commit()
+    connection.close()
+
+    subject = "TaskHub Password Reset Code"
+
+    body = f"""
+Hello,
+
+Your TaskHub password reset verification code is:
+
+{otp}
+
+This code expires in 10 minutes.
+
+If you didn't request a password reset, you can safely ignore this email.
+
+TaskHub Team
+"""
+
+    send_email(email, subject, body)
+
+    flash("A verification code has been sent to your email.", "success")
+
+    return render_template(
+    "login.html",
+    show_otp=True,
+    email=email
+)
+
+@app.route("/verify_otp", methods=["POST"])
+def verify_otp():
+
+    email = request.form["email"]
+    otp = request.form["otp"]
+
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        (email,)
+    )
+
+    user = cursor.fetchone()
+
+    connection.close()
+
+    if not user:
+        flash("User not found", "error")
+        return redirect(url_for("login"))
+
+    if user["otp_code"] != otp:
+        flash("Invalid OTP", "error")
+        return redirect(url_for("login"))
+
+    if datetime.now() > datetime.strptime(user["otp_expiry"], "%Y-%m-%d %H:%M:%S"):
+        flash("OTP expired", "error")
+        return redirect(url_for("login"))
+
+    return redirect(url_for("reset_password", email=email))
+
+@app.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
+
+    if request.method == "GET":
+        email = request.args.get("email")
+        return render_template(
+            "login.html",
+            show_reset=True,
+            email=email
+        )
+
+    email = request.form["email"]
+    password = request.form["password"]
+    confirm_password = request.form["confirm_password"]
+
+    if password != confirm_password:
+        flash("Passwords do not match.", "error")
+        return render_template(
+            "login.html",
+            show_reset=True,
+            email=email
+        )
+
+    hashed_password = generate_password_hash(password)
+
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        UPDATE users
+        SET password=?, otp_code=NULL, otp_expiry=NULL
+        WHERE email=?
+        """,
+        (hashed_password, email)
+    )
+
+    connection.commit()
+    connection.close()
+
+    flash("Password reset successfully! Please sign in.", "success")
+    return redirect(url_for("login"))
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -105,7 +249,7 @@ def create_task():
     user_id = session["user_id"]
 
     if request.method == "POST":
-        print("Form data received:", request.form)  # Debugging line
+        # print("Form data received:", request.form)  # Debugging line
         
         title = request.form["title"]
         description = request.form["description"]

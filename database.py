@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS tasks (
     category TEXT,
     priority TEXT,
     due_date TEXT,
-    status TEXT DEFAULT 'Pending'
+    status TEXT DEFAULT 'Pending',
+    user_id INTEGER
 )
 """)
 cursor.execute("""
@@ -24,18 +25,36 @@ CREATE TABLE IF NOT EXISTS users(
     password TEXT NOT NULL
 )
 """)
-cursor.execute("""
-ALTER TABLE tasks
-ADD COLUMN reminder_sent INTEGER DEFAULT 0
-""")
-#cursor.execute("""
-#ALTER TABLE tasks
-#ADD COLUMN user_id INTEGER
-#""")
 
-#cursor.execute("DROP TABLE IF EXISTS users")
+try:
+    cursor.execute("ALTER TABLE users ADD COLUMN otp_code TEXT")
+except:
+    pass
+
+try:
+    cursor.execute("ALTER TABLE users ADD COLUMN otp_expiry TEXT")
+except:
+    pass
+
+try:
+    cursor.execute("""
+    ALTER TABLE tasks
+    ADD COLUMN reminder_sent INTEGER DEFAULT 0
+    """)
+except:
+    pass
+
+try:
+    cursor.execute("""
+    ALTER TABLE tasks
+    ADD COLUMN user_id INTEGER
+    """)
+except:
+    pass
 
 connection.commit()
 connection.close()
+
+#cursor.execute("DROP TABLE IF EXISTS users")
 
 print("Database created successfully!")

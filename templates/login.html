@@ -19,8 +19,8 @@
             </div>
 
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('login')">Sign In</button>
-                <button class="tab" onclick="switchTab('signup')">Create Account</button>
+                <button class="tab active" onclick="switchTab('login', this)">Sign In</button>
+                <button class="tab" onclick="switchTab('signup', this)">Create Account</button>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -33,7 +33,6 @@
   {% endif %}
 {% endwith %}
 
-            <!-- Login Form -->
             <div id="login" class="form-section active">
                 <form action="/login" method="POST">
                     <div class="input-group">
@@ -61,14 +60,16 @@
                             <input type="checkbox">
                             Remember me
                         </label>
-                        <a href="#" class="forgot">Forgot password?</a>
+                        <a href="#" class="forgot" onclick="showForgotPassword();
+                        return false;">
+                        Forgot password?
+                        </a>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Sign In</button>
                 </form>
             </div>
 
-            <!-- Sign Up Form -->
             <div id="signup" class="form-section">
                 <form action="/signup" method="POST">
                     <div class="name-row">
@@ -130,6 +131,145 @@
                 </form>
             </div>
 
+            <div id="forgot-password" class="form-section">
+                <form action="/forgot_password" method="POST">
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+
+                        <div class="input-wrapper">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                required>
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Send Verification Code
+                    </button>
+
+                    <!-- <button type="button" class="btn btn-primary" onclick="showVerifyOTP()">
+                        Send Verification Code
+                    </button> -->
+
+                    <p class="terms">
+                        Remember your password?
+                        <a href="#" onclick="backToLogin(); return false;">
+                            Sign In
+                        </a>
+                    </p>
+
+                </form>
+            </div>
+
+            <div id="verify-otp" class="form-section">
+                <form action="/verify_otp" method="POST">
+
+                    <input type="hidden" name="email" id="otp-email">
+
+                    <div class="input-group">
+                        <label>Verification Code</label>
+
+                        <div class="input-wrapper">
+                            <input
+                                name="otp"
+                                type="text"
+                                maxlength="6"
+                                placeholder="Enter 6-digit code"
+                                required>
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7v6c0 5.55 3.84 10.74 10 12 6.16-1.26 10-6.45 10-12V7l-10-5z"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Verify Code
+                    </button>
+
+                    <p class="terms">
+                        Didn't receive a code?
+                        
+                        <a href="#" onclick="resendOTP(); return false;">
+                            Resend Code
+                        </a>
+                    </p>
+
+                </form>
+            </div>
+
+            <div id="reset-password" class="form-section">
+                <form action="/reset_password" method="POST">
+                    
+                    <input type="hidden" name="email" value="{{ email }}">
+
+                    <div class="input-group">
+                        <label>New Password</label>
+
+                        <div class="input-wrapper">
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Enter new password"
+                                required>
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+
+                        <div class="input-wrapper">
+                            <input
+                                name="confirm_password"
+                                type="password"
+                                placeholder="Confirm new password"
+                                required>
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1v2z"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Reset Password
+                    </button>
+
+                    <!-- <button type="button" class="btn btn-primary">
+                        Reset Password
+                    </button> -->
+
+                    <!-- <p class="terms">
+                        Didn't receive a code?
+                        <a href="#" id="resend-link" onclick="resendOTP(); return false;">
+                            Resend Code
+                        </a>
+
+                        <span id="countdown" style="display:none;"></span>
+                    </p> -->
+
+                </form>
+            </div>
+
             <div class="divider"><span>or continue with</span></div>
 
             <div class="social-login">
@@ -146,6 +286,39 @@
         </div>
     </div>
 
-    
+    {% if show_otp %}
+<script>
+    showVerifyOTP("{{ email }}");
+</script>
+{% endif %}
+
+    {% if show_otp %}
+<script>
+    showVerifyOTP("{{ email }}");
+</script>
+{% endif %}
+
+{% if show_reset %}
+<script>
+    showResetPassword();
+</script>
+{% endif %}
+
+<input
+    type="hidden"
+    id="show-otp"
+    value="{{ 'true' if show_otp else 'false' }}">
+
+<input
+    type="hidden"
+    id="show-otp-email"
+    value="{{ email or '' }}">
+
+    <input
+    type="hidden"
+    id="show-reset"
+    value="{{ 'true' if show_reset else 'false' }}">
+
 </body>
+
 </html>
