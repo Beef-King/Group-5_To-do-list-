@@ -6,12 +6,30 @@ from datetime import datetime, timedelta
 from email_service import send_email
 import sqlite3
 import os
+from dotenv import load_dotenv
+from authlib.integrations.flask_client import OAuth
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "database.db")
 
-app = Flask(__name__)
 
-app.secret_key = "group5_secret_key"
+app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
+# app.secret_key = "group5_secret_key"
+
+oauth = OAuth(app)
+google = oauth.register(
+    name="google",
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+    client_kwargs={
+        "scope": "openid email profile"
+    }
+)
 
 @app.route("/")
 def home():
@@ -92,6 +110,96 @@ def login():
         return redirect(url_for("login"))
 
     return render_template("login.html")
+
+@app.route("/login/google")
+def google_login():
+    redirect_uri = url_for("google_callback", _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@app.route("/login/google/callback")
+def google_callback():
+
+    try:
+        token = google.authorize_access_token()
+        user_info = token["userinfo"]
+    except Exception as e:
+        print("Google OAuth Error:", e)
+        flash("Google sign-in failed. Please try again.", "error")
+        return redirect(url_for("login"))
+
+    email = user_info["email"]
+    first_name = user_info.get("given_name", "")
+    last_name = user_info.get("family_name", "")
+    google_id = user_info["sub"]
+
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        (email,)
+    )
+
+    user = cursor.fetchone()
+
+    if user:
+
+        cursor.execute("""
+            UPDATE users
+            SET google_id=?
+            WHERE email=?
+        """, (google_id, email))
+
+        connection.commit()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE email=?",
+            (email,)
+        )
+
+        user = cursor.fetchone()
+
+    else:
+
+        password = generate_password_hash(os.urandom(24).hex())
+
+        cursor.execute("""
+            INSERT INTO users(
+                first_name,
+                last_name,
+                email,
+                password,
+                auth_provider,
+                google_id
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            first_name,
+            last_name,
+            email,
+            password,
+            "google",
+            google_id
+        ))
+
+        connection.commit()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE email=?",
+            (email,)
+        )
+
+        user = cursor.fetchone()
+
+    connection.close()
+
+    session["user_id"] = user["id"]
+    session["first_name"] = user["first_name"]
+
+    flash(f"Welcome, {user['first_name']}!", "success")
+
+    return redirect(url_for("view_tasks"))
 
 @app.route("/forgot_password", methods=["POST"])
 def forgot_password():
